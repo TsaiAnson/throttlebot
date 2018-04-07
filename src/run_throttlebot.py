@@ -800,25 +800,25 @@ def run(sys_config, workload_config, filter_config, default_mr_config, last_comp
 
         # Potentially adapt step size if no performance gains observed
         # Do this after step summary for easy debugging
-        minimum_step_gap = 0.15
-        if is_performance_improved(previous_mean, improved_mean, optimize_for_lowest, within_x=0.01) is False:
-            print 'Net performance improvement reported as 0, so initiating a backtrack step'
-            new_performance = backtrack_overstep(redis_db,
-                                                 workload_config,
-                                                 experiment_count,
-                                                 current_performance,
-                                                 action_taken,
-                                                 minimum_step_gap)
-
-            if new_performance:
-                current_performance = new_performance
-
-                # Checkpoint MR configurations and print
-                current_mr_config = resource_datastore.read_all_mr_alloc(redis_db)
-                print_csv_configuration(current_mr_config)
-                experiment_count += 1
-
-                print 'Backtrack completed, referred to as experiment {}'.format(experiment_count)
+        # minimum_step_gap = 0.15
+        # if is_performance_improved(previous_mean, improved_mean, optimize_for_lowest, within_x=0.01) is False:
+        #     print 'Net performance improvement reported as 0, so initiating a backtrack step'
+        #     new_performance = backtrack_overstep(redis_db,
+        #                                          workload_config,
+        #                                          experiment_count,
+        #                                          current_performance,
+        #                                          action_taken,
+        #                                          minimum_step_gap)
+        #
+        #     if new_performance:
+        #         current_performance = new_performance
+        #
+        #         # Checkpoint MR configurations and print
+        #         current_mr_config = resource_datastore.read_all_mr_alloc(redis_db)
+        #         print_csv_configuration(current_mr_config)
+        #         experiment_count += 1
+        #
+        #         print 'Backtrack completed, referred to as experiment {}'.format(experiment_count)
 
         print_all_steps(redis_db, experiment_count, sys_config, workload_config, filter_config)
 
