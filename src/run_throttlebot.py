@@ -802,12 +802,11 @@ def run(sys_config, workload_config, filter_config, default_mr_config, last_comp
                                                           mr_working_set, analytic_mean,
                                                           sys_config, workload_config)
 
-                nimr_diff_proposal,imr_improvement_proposal = create_decrease_nimr_schedule(redis_db,
-                                                                                            current_mimr,
-                                                                                            filtered_nimr_list,
-                                                                                            stress_weight,
-                                                                                            imr_improvement_weight
-                )
+                imr_improvement_proposal,nimr_diff_proposal = assess_improvement_proposal(redis_db,
+                                                                                          current_mimr,
+                                                                                          filtered_nimr_list,
+                                                                                          imr_improvement_proposal,
+                                                                                          stress_weight)
 
 
             # Try a different MIMR if no additional resources can be culled
@@ -1096,7 +1095,7 @@ def parse_config_file(config_file):
     fill_services_first = config.get('Basic', 'fill_services_first')
     if fill_services_first == '':
         sys_config['fill_services_first'] = None
-        if sys_config['setting_mode'] == 'on_prem':
+        if sys_config['setting_mode'] == 'prem':
             print 'You need to specify some services to try to fill first!'
             exit()
     else:
